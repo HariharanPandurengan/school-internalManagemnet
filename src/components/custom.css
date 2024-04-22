@@ -1,0 +1,265 @@
+/* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.WholeContainer{
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+/* Login container styles */
+.login-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 20%;
+    margin: auto;
+}
+
+/* Login form styles */
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Input group styles */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.input-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* Button styles */
+button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Form heading styles */
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#create-teacher{
+    border-radius: 25px;
+    box-shadow: 0px 0px 15px -5px rgb(152, 152, 152);
+    line-height: 2;
+    max-height: 340px;
+}
+
+.input{
+    border-radius: 10px;
+    border: 1px solid gray;
+}
+
+.admin-sec-1{
+    display: flex;
+    justify-content: center;
+    /* align-items: start; */
+    max-height: 1000px;
+}
+
+.line{
+    width: 2px;
+    margin: auto;
+    border-left: 1px solid gray;
+    height: 100%;
+}
+
+.teacher-list{
+    border-radius: 25px;
+    box-shadow: 0px 0px 15px -5px rgb(152, 152, 152);
+}
+
+/* Style for input box */
+.teacher-search-box[type="text"] {
+    border:none;
+}
+  
+/* Style for input box when focused */
+.teacher-search-box[type="text"]:focus {
+outline: none; /* Remove default focus outline */
+border-color: transparent; /* Set border color to transparent */
+box-shadow: none; /* Remove any box shadow */
+}
+
+/* Style for input box */
+.student-search[type="text"] {
+    border:1px solid gray;
+    border-radius: none !important;
+}
+  
+/* Style for input box when focused */
+.student-search[type="text"]:focus {
+outline: none; /* Remove default focus outline */
+border-color: transparent; /* Set border color to transparent */
+box-shadow: none; /* Remove any box shadow */
+}
+
+#teacher-login {
+    width: 50%;
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 10px;
+    text-align: center;
+    margin: auto;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.t-profile{
+    background-color: rgb(253, 234, 210);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px -9px;
+}
+
+.profile-section {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .profile-divs {
+    margin-bottom: 10px;
+  }
+  
+  .profile-divs p {
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  .profile-divs input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .profile-divs input[type="checkbox"],
+  .profile-divs input[type="radio"] {
+    width: auto;
+  }
+  
+  .profile-divs input[type="button"],
+  .profile-divs input[type="submit"],
+  .profile-divs input[type="reset"],
+  .profile-divs button {
+    width: auto;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+  }
+  
+  .profile-divs input[type="button"]:hover,
+  .profile-divs input[type="submit"]:hover,
+  .profile-divs input[type="reset"]:hover,
+  .profile-divs button:hover {
+    background-color: #0056b3;
+  }
+  
+  .tt-td{
+    width: 11%;
+    text-align: center;
+  }
+
+  td input{
+    text-align: center;
+  }
+
+  .t-nav-ul{
+    width: 40%;
+  }
+
+  .adm-nal-ul{
+    width: 40%;
+    justify-content: space-around;
+  }
+
+  .stNav-ul{
+    width: 40%;
+    justify-content: space-around;
+  }
+
+  .att-table{
+    width: 90%;
+  }
+  body {
+    /* background: linear-gradient(rgb(242, 243, 254),white);
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-repeat: no-repeat;
+    height: 100vh; */
+ }
+
+ .nav-opt:hover{
+  text-shadow: 0 0 10px white, /* Glow color */
+  0 0 20px white, /* Increase the spread for a stronger glow */
+  0 0 30px white; /* Increase the spread further for a stronger glow */
+
+ }
+
+ .class-result{
+  background-color: #f3f0ca;
+ }
+
+ .class-att{
+  background-color: #ff7272;
+ }
+
+ .class-hw{
+  background-color: #d5ffbf;
+ }
+
+ .hw-date{
+  background-color: #f9f9f9;
+  text-align: center;
+  width: 20%;
+  margin: auto;
+  box-shadow: 0px 0px 5px 0px gray;
+  border-radius: 25px;
+ }
+
+ .stuNotPopup{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.623);
+  position: absolute;
+  z-index: 999 ;
+  padding-top: 200px;
+ }
