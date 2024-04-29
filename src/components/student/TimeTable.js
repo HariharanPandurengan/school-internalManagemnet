@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../custom.css';
 import StudentNavbar from './StudentNavbar';
 import { useSelector } from 'react-redux';
-import axios from 'axios'
+import axios from 'axios';
 
 function TimeTable() {
     const useremail = useSelector((state) => state.user.email);
@@ -13,22 +13,24 @@ function TimeTable() {
     useEffect(()=>{
         axios.get(`http://localhost:3001/getStud/${useremail}`)
         .then(response => {  
-
-            axios.get(`http://localhost:3001/getTimetable/${response.data.user.classTeacher}`)
-            .then(response => {  
-                response.data.tt.length !== 0 && setTt(response.data.tt[0])
-            })
-            .catch(error => {
-              console.error('Error fetching admins:', error);
-            });
-
-            axios.get(`http://localhost:3001/getEttforTeacher/${response.data.user.classTeacher}`)
-            .then(response => {  
-                setETt(response.data.user)
-            })
-            .catch(error => {
-              console.error('Error fetching admins:', error);
-            });
+            if(response.data.user.classTeacher !== '' && response.data.user.classTeacher !== null){
+                axios.get(`http://localhost:3001/getTimetable/${response.data.user.classTeacher}`)
+                .then(response => {  
+                    response.data.tt.length !== 0 && setTt(response.data.tt[0])
+                })
+                .catch(error => {
+                  console.error('Error fetching admins:', error);
+                });
+    
+                axios.get(`http://localhost:3001/getEttforTeacher/${response.data.user.classTeacher}`)
+                .then(response => {  
+                    setETt(response.data.user)
+                })
+                .catch(error => {
+                  console.error('Error fetching admins:', error);
+                });
+            }
+           
         })
         .catch(error => {
           console.error('Error fetching admins:', error);
@@ -76,33 +78,36 @@ function TimeTable() {
             <StudentNavbar></StudentNavbar>
             <div className='w-100 text-center'>
                 <h3 className='text-decoration-underline mb-3'>Class TimeTable</h3>
-                <table className='table w-75 m-auto' style={{boxShadow:'0px 0px 20px -7px gray'}}>
-                    <thead className='w-100'>
-                        <tr className='w-100'>
-                            <td className='tt-td border'><strong>DAY</strong></td>
-                            <td className='tt-td border'><strong>Period 1</strong></td>
-                            <td className='tt-td border'><strong>Period 2</strong></td>
-                            <td className='tt-td border'><strong>Period 3</strong></td>
-                            <td className='tt-td border'><strong>Period 4</strong></td>
-                            <td className='tt-td border'><strong>Period 5</strong></td>
-                            <td className='tt-td border'><strong>Period 6</strong></td>
-                            <td className='tt-td border'><strong>Period 7</strong></td>
-                            <td className='tt-td border'><strong>Period 8</strong></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {Object.keys(timetable.timetable).map((day, index) => (
-                            <tr key={index}>
-                                <td className='tt-td border'><strong>{day}</strong></td>
-                                {Object.keys(timetable.timetable[day]).map((period, idx) => (
-                                    <td key={idx} className='tt-td border'>
-                                        <p className='m-0'>{timetable.timetable[day][period]}</p>
-                                    </td>
-                                ))}
+                <div className="stu-teacher-tt-div table-container d-flex" style={{ overflowX: 'auto', maxWidth: '100%',position:'relative'}}>
+                    <table className='table stu-teacher-tt m-auto' style={{boxShadow:'0px 0px 20px -7px gray'}}>
+                        <thead className='w-100'>
+                            <tr className='w-100'>
+                                <td className='tt-td border'><strong>DAY</strong></td>
+                                <td className='tt-td border'><strong>Period 1</strong></td>
+                                <td className='tt-td border'><strong>Period 2</strong></td>
+                                <td className='tt-td border'><strong>Period 3</strong></td>
+                                <td className='tt-td border'><strong>Period 4</strong></td>
+                                <td className='tt-td border'><strong>Period 5</strong></td>
+                                <td className='tt-td border'><strong>Period 6</strong></td>
+                                <td className='tt-td border'><strong>Period 7</strong></td>
+                                <td className='tt-td border'><strong>Period 8</strong></td>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {Object.keys(timetable.timetable).map((day, index) => (
+                                <tr key={index}>
+                                    <td className='tt-td border'><strong>{day}</strong></td>
+                                    {Object.keys(timetable.timetable[day]).map((period, idx) => (
+                                        <td key={idx} className='tt-td border'>
+                                            <p className='m-0'>{timetable.timetable[day][period]}</p>
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            
             </div>
             <div className='mt-5 text-center pb-5'>
                 {

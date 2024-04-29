@@ -24,6 +24,7 @@ import TeacherResult from './components/teacher/Result';
 import TeacherClasses from './components/teacher/Classes';
 import TeacherClass from './components/teacher/Class';
 import TeacherChangePassword from './components/teacher/ChangePassword';
+import StudentView from './components/teacher/StudentView';
 
 import StudentLogin from "./components/student/Index";
 import StudentLandingPage from './components/student/Home';
@@ -39,7 +40,7 @@ function App() {
     <>
       <Provider store={store}>
         <Routes>
-            <Route path="/" element={<AdminLogin></AdminLogin>}></Route>
+            <Route path="/" element={<AdminLogin></AdminLogin>}></Route>S
             <Route element={<ProtectedRoute></ProtectedRoute>}>
               <Route path="/adminHome" element={<AdminLandingPage></AdminLandingPage>}></Route>
               <Route path="/teacherView/:email" element={<TeacherView></TeacherView>}></Route>
@@ -47,6 +48,7 @@ function App() {
               <Route path="/AdminClasses" element={<AdminClasses></AdminClasses>}></Route>
               <Route path="/adminclass/:className" element={<AdminClass></AdminClass>}></Route>
               <Route path="/adminChangePassword" element={<AdminChangePassword></AdminChangePassword>}></Route>
+              <Route path="/studentView/:email" element={<StudentView></StudentView>}></Route>
             </Route>
 
             <Route path="/teacher" element={<TeacherLogin></TeacherLogin>}></Route>
@@ -60,6 +62,7 @@ function App() {
               <Route path="/TeacherClasses" element={<TeacherClasses></TeacherClasses>}></Route>
               <Route path="/teacherClass/:className" element={<TeacherClass></TeacherClass>}></Route>
               <Route path="/teacherChangePassword" element={<TeacherChangePassword></TeacherChangePassword>}></Route>
+              <Route path="/studentView/:email" element={<StudentView></StudentView>}></Route>
             </Route>
 
             <Route path="/student" element={<StudentLogin></StudentLogin>}></Route>

@@ -61,7 +61,7 @@ function ChangePassword() {
             <StudentNavbar></StudentNavbar>
             <section>
                 <h2>Change Password</h2>
-                <div className='w-25 m-auto mt-3 d-flex flex-column'>
+                <div className='stu-techer-passChange-div m-auto mt-3 d-flex flex-column'>
                     <input type='password' onChange={(e)=>setPrePass(e.target.value)} value={prePass} className={prePassSucc ? 'd-none' :'text-center rounded mb-2'} placeholder='Enter Previous Password'/>
                     <button onClick={passCheck} className={prePassSucc ? 'd-none' : 'btn btn-primary mb-4 w-25 m-auto'}>Ok</button>
                     <input type='password' onChange={(e)=>setNewPass(e.target.value)} value={newPass} className={prePassSucc ?'text-center rounded mb-2' : 'd-none'} placeholder='Enter New Password'/>

@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import TeacherNavbar from './TeacherNavbar';
 import '../custom.css';
-import { useLocation,Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './Navbar';
 import axios from 'axios'
 import DataTable from 'react-data-table-component'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faArrowCircleLeft , faTrash } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useParams } from 'react-router-dom';
 
-function Student() {
-    const username = useSelector((state) => state.user.username);
-    const useremail = useSelector((state) => state.user.email);
+
+function StudentView() {
+
+    const { email } = useParams();
 
     const [studentsData, setStudentsData] = useState([]);
     const [studentnamesearch, setStudentnamesearch] = useState('');
@@ -22,13 +21,8 @@ function Student() {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [attDetails , setAttDetails] = useState({});
 
-    const handleDateChange = date => {
-        setSelectedDate(date);
-    };
-
-    const studentSearch = async (e) => {
-        e.preventDefault();
-        axios.get(`http://localhost:3001/searchStudent/${studentEmailsearch}`)
+    useEffect(()=>{
+        axios.get(`http://localhost:3001/searchStudent/${email}`)
         .then(response => {
             if(response.data.message === 'Student not found'){
                 alert('Student not found')
@@ -42,59 +36,12 @@ function Student() {
         .catch(error => {
           console.error('Error fetching admins:', error);
         });
-    }
+    },[email])
 
-    const deleteStudent = async (stuEmail) => {
-        try {
-            const response = await axios.post('http://localhost:3001/deleteStudent', {
-                email: stuEmail,
-            });
+    const handleDateChange = date => {
+        setSelectedDate(date);
+    };
 
-            if(response.data.message === 'Student deleted successfully'){
-                alert('Student deleted successfully')
-                axios.get(`http://localhost:3001/searchStudent/${studentEmailsearch}`)
-                .then(response => {
-                    if(response.data.message === 'Student not found'){
-                        alert('Student not found')
-                    } 
-                    setStudentsData([response.data.user])
-                    setSearchedStudent(response.data.user)
-                })
-                .catch(error => {
-                  console.error('Error fetching admins:', error);
-                });
-            } 
-           
-        } catch (error) {
-            console.error('Error creating student:', error);
-        }
-    }
-
-    const retrieve = async (stuEmail) => {
-        try {
-            const response = await axios.post('http://localhost:3001/retrieveStudent', {
-                email: stuEmail,
-            });
-
-            if(response.data.message === 'Student retrieved successfully'){
-                alert('Student retrieved successfully')
-                axios.get(`http://localhost:3001/searchStudent/${studentEmailsearch}`)
-                .then(response => {
-                    if(response.data.message === 'Student not found'){
-                        alert('Student not found')
-                    } 
-                    setStudentsData([response.data.user])
-                    setSearchedStudent(response.data.user)
-                })
-                .catch(error => {
-                  console.error('Error fetching admins:', error);
-                });
-            } 
-           
-        } catch (error) {
-            console.error('Error creating student:', error);
-        }
-    }
     
     let totalDaysInMonth = ''
     totalDaysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).getDate();
@@ -175,38 +122,11 @@ function Student() {
             name : "Status",
             selector : row => (row.deleted === '1' ? 'Deleted' : 'Active')
         },
-        {
-            name : "Action",
-            selector: (row) => ( row.deleted === '0' ?
-                <div style={{cursor:'pointer'}} onClick={()=>{
-                    deleteStudent(row.email)
-                }}>
-                    <FontAwesomeIcon  icon={faTrash} className='pe-1 text-danger'style={{ color: 'gray' }}/>
-                    <span>Delete</span>
-                </div>
-                
-                :
-                <div style={{cursor:'pointer'}} onClick={()=>{
-                    retrieve(row.email)
-                }}>
-                  <FontAwesomeIcon  icon={faArrowCircleLeft} className='pe-1 text-success'style={{ color: 'gray' }}/>
-                <span>Retrieve</span>
-                </div>
-              ),
-        }
     ]
-
     return ( 
         <>
-           <Navbar></Navbar>
+        <TeacherNavbar></TeacherNavbar>
            <section className='w-75 m-auto text-center'>
-                <h4 className='mb-3'>Search Student</h4>
-                <div className='d-flex justify-content-center align-items-center'>
-                    <div className='d-flex justify-content-center align-items-center me-3'>
-                        <input type='email' placeholder='Enter Email' className='student-search text-center me-2' value={studentEmailsearch} onChange={(e)=>setStudentEmailsearch(e.target.value)} /> 
-                        <button className='btn btn-primary p-0 p-1' onClick={studentSearch}>Search</button> 
-                    </div>
-                </div>
                 <DataTable 
                     columns={columns}
                     data={studentsData}
@@ -217,12 +137,12 @@ function Student() {
            </section>
            <hr className='m-0 mt-4'></hr>
            <hr className='mt-1'></hr>
-           <section className='mt-5'>
+            <section className='mt-5'>
                 <>
                     <h3 className='text-center mb-4 text-decoration-underline'>Student Profile</h3>
                     <div className='row justify-content-around align-items-start pb-5 w-100 m-auto p-2'>
                     {
-                       studentsData[0]?.studentProfile ?
+                       studentsData[0]?.studentProfile ? 
                         <div className='col-lg-5 p-3 rounded position-relative mb-4' style={{boxShadow:'0px 0px 20px -5px gray',wordWrap : 'break-word'}}>
                             <div className='stu-tec-img-div'>
                                 <img className='w-100 h-100' src={"../"+aa} alt="TeacherImage" />
@@ -289,4 +209,4 @@ function Student() {
      );
 }
 
-export default Student;
+export default StudentView;

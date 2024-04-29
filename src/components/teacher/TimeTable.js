@@ -192,37 +192,39 @@ function TimeTable() {
             <TeacherNavbar></TeacherNavbar>
             <div className='w-100 text-center'>
                 <h3 className='text-decoration-underline mb-3'>Class TimeTable</h3>
-                <table className='table w-75 m-auto' style={{boxShadow:'0px 0px 20px -7px gray'}}>
-                    <thead className='w-100'>
-                        <tr className='w-100'>
-                            <td className='tt-td border'><strong>DAY</strong></td>
-                            <td className='tt-td border'><strong>Period 1</strong></td>
-                            <td className='tt-td border'><strong>Period 2</strong></td>
-                            <td className='tt-td border'><strong>Period 3</strong></td>
-                            <td className='tt-td border'><strong>Period 4</strong></td>
-                            <td className='tt-td border'><strong>Period 5</strong></td>
-                            <td className='tt-td border'><strong>Period 6</strong></td>
-                            <td className='tt-td border'><strong>Period 7</strong></td>
-                            <td className='tt-td border'><strong>Period 8</strong></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {Object.keys(timetable.timetable).map((day, index) => (
-                            <tr key={index}>
-                                <td className='tt-td border'><strong>{day}</strong></td>
-                                {Object.keys(timetable.timetable[day]).map((period, idx) => (
-                                    <td key={idx} className='tt-td border'>
-                                        <input
-                                            className='w-100'
-                                            value={timetable.timetable[day][period]}
-                                            onChange={(e) => handleChange(day, period, e.target.value)}
-                                        />
-                                    </td>
-                                ))}
+                <div className="stu-teacher-tt-div table-container d-flex" style={{ overflowX: 'auto', maxWidth: '100%',position:'relative'}}>
+                    <table className='table stu-teacher-tt m-auto' style={{boxShadow:'0px 0px 20px -7px gray'}}>
+                        <thead className='w-100'>
+                            <tr className='w-100'>
+                                <td className='tt-td border'><strong>DAY</strong></td>
+                                <td className='tt-td border'><strong>Period 1</strong></td>
+                                <td className='tt-td border'><strong>Period 2</strong></td>
+                                <td className='tt-td border'><strong>Period 3</strong></td>
+                                <td className='tt-td border'><strong>Period 4</strong></td>
+                                <td className='tt-td border'><strong>Period 5</strong></td>
+                                <td className='tt-td border'><strong>Period 6</strong></td>
+                                <td className='tt-td border'><strong>Period 7</strong></td>
+                                <td className='tt-td border'><strong>Period 8</strong></td>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {Object.keys(timetable.timetable).map((day, index) => (
+                                <tr key={index}>
+                                    <td className='tt-td border'><strong>{day}</strong></td>
+                                    {Object.keys(timetable.timetable[day]).map((period, idx) => (
+                                        <td key={idx} className='tt-td border'>
+                                            <input
+                                                className='w-100'
+                                                value={timetable.timetable[day][period]}
+                                                onChange={(e) => handleChange(day, period, e.target.value)}
+                                            />
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
                 <button className='btn btn-primary mt-3' onClick={updateTimetable}>Update</button>
             </div>
             <div className='mt-5 pb-5 text-center'>

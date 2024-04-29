@@ -42,7 +42,7 @@ function Index() {
                dispatch(adminLogin(true))
                navigate('/adminHome')
             }
-            console.log(response.data); // Log the response from the backend
+            
         } catch (error) {
             console.error('Error creating teacher:', error);
         }

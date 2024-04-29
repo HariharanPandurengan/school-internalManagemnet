@@ -60,7 +60,6 @@ function TeacherProfile() {
                     if (key in updatedTeacherDetails) {
                         if(key === 'emergencyContact1'){
                             for (const subKey  in teacherData.teacherProfile.emergencyContact1) {
-                                console.log(teacherData.teacherProfile.emergencyContact1[subKey])
                                 updatedTeacherDetails.emergencyContact1[subKey] = teacherData.teacherProfile.emergencyContact1[subKey];
                             }  
                         }
@@ -142,31 +141,34 @@ function TeacherProfile() {
     };
 
     const uploadImg = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:3001/updateTeachersImage', {
-                image : img,
-                email : useremail
-            } , {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then(response => {
-            if(response.data.message === 'Teacher Image updated successfully'){
-                alert('Photo Updated Successfully')
-            }
-            axios.get(`http://localhost:3001/getTeacherDetail/${useremail}`)
+        if(img === ''){
+            alert('Choose a image to upload')
+        }
+        else{
+            axios.post('http://localhost:3001/updateStudentsImage', {
+                    image : img,
+                    email : useremail
+                } , {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
             .then(response => {
-                setTeacherData(response.data.user[0])
-                setPrevImg(response.data.user[0].image)
+                if(response.data.message === 'Student Image updated successfully'){
+                    alert('Photo Updated Successfully')
+                }
+                axios.get(`http://localhost:3001/getStudentDetail/${useremail}`)
+                .then(response => {
+                    setPrevImg(response.data.user[0].image)
+                })
+                .catch(error => {
+                console.error('Error fetching admins:', error);
+                });
             })
             .catch(error => {
-            console.error('Error fetching admins:', error);
+                console.error('Error sending data:', error);
             });
-        })
-        .catch(error => {
-            console.error('Error sending data:', error);
-        });
+        }
     };
 
     let aa = prevImg.split('\\');
@@ -176,7 +178,7 @@ function TeacherProfile() {
     return ( 
         <>
             <TeacherNavbar></TeacherNavbar>
-            <section className='w-50 m-auto overflow-hidden t-profile mb-5'>
+            <section className='m-auto overflow-hidden t-profile mb-5'>
                 <h3>Profile</h3>
                 <form className='ms-3 w-75' onSubmit={handleSubmit}>
                     <div className="profile-divs">
@@ -369,6 +371,7 @@ function TeacherProfile() {
                     </div>
                     <button type="submit" className='btn btn-primary'>Submit</button>
                 </form>
+                <hr></hr>
                 <div className='mt-2 ms-3' style={{position:'relative'}}>
                     <p className='m-0 fw-bold'>Your Picture :</p>
                     <input type="file" accept="image/*" name="image" onChange={(e)=>setImg(e.target.files[0])}/> <br/>

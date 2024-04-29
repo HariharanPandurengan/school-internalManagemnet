@@ -27,6 +27,7 @@ function Class() {
     const [searchedStudent , setSearchedStudent] = useState(null);
     const [attDetails , setAttDetails] = useState(null);
     const [selectedDate, setSelectedDate] = useState(new Date());
+   
 
     useEffect(()=>{
         axios.get(`http://localhost:3001/getClassDetailsforTeacher/${className}`)
@@ -205,6 +206,13 @@ function Class() {
 
 // Attendance functions
 
+    const [obj , setObj] = useState(  
+    {
+        className : className,
+        month : (selectedDate.getMonth()+1).toString().padStart(2, '0')+'/'+selectedDate.getFullYear(),
+        att : {}
+    })
+
     const handleDateChange = date => {
         setSelectedDate(date);
     };
@@ -213,33 +221,7 @@ function Class() {
 
     totalDaysInMonth = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0).getDate();
 
-    const obj = {
-        className : className,
-        month : (selectedDate.getMonth()+1).toString().padStart(2, '0')+'/'+selectedDate.getFullYear(),
-        att : {}
-    }
-
-    studentsData?.map(item => {
-        obj.att[item.email.slice(0, -4)] = {}
-        for (let day = 1; day <= totalDaysInMonth; day++) {
-            const dayKey = 'day' + day;
-            obj.att[item.email.slice(0, -4)][dayKey] = '';
-        }
-    })
-
-  
-    if(attDetails !== null){
-        for (let key in attDetails) {
-            for (let day = 1; day <= totalDaysInMonth; day++) {
-                const dayKey = 'day' + day;
-                if(obj.att[key]?.hasOwnProperty('day' + day)){
-                    obj.att[key][dayKey] = attDetails[key][dayKey];
-                }
-            }
-        }
-    }
-
-    if(attDetails === null){
+    useEffect(()=>{
         studentsData?.map(item => {
             obj.att[item.email.slice(0, -4)] = {}
             for (let day = 1; day <= totalDaysInMonth; day++) {
@@ -247,7 +229,31 @@ function Class() {
                 obj.att[item.email.slice(0, -4)][dayKey] = '';
             }
         })
-    }
+    
+      
+        if(attDetails !== null){
+            for (let key in attDetails) {
+                for (let day = 1; day <= totalDaysInMonth; day++) {
+                    const dayKey = 'day' + day;
+                    if(obj.att[key]?.hasOwnProperty('day' + day)){
+                        obj.att[key][dayKey] = attDetails[key][dayKey];
+                    }
+                }
+            }
+        }
+    
+        if(attDetails === null){
+            studentsData?.map(item => {
+                obj.att[item.email.slice(0, -4)] = {}
+                for (let day = 1; day <= totalDaysInMonth; day++) {
+                    const dayKey = 'day' + day;
+                    obj.att[item.email.slice(0, -4)][dayKey] = '';
+                }
+            })
+        }
+    },[studentsData,attDetails])
+
+  
 
     useEffect(()=>{
         const preAttPost = [];
@@ -285,23 +291,59 @@ function Class() {
 
     const renderTablebody = (email) => {
         let headers = [];
-        for (let day = 1; day <= totalDaysInMonth; day++) {
-            headers.push(
-                <td className='border p-1' key={day+''}>
-                    <select className={''} onChange={(e)=>{
-                        obj.att[email.slice(0, -4)]['day'+day] = e.target.value
-                        }}>
-                        <option value='-' ></option>
-                        <option value='present' selected={obj.att[email.slice(0, -4)]['day'+day] === 'present' ? true : false}>Present</option>
-                        <option value='Absent' selected={obj.att[email.slice(0, -4)]['day'+day] === 'Absent' ? true : false}>Absent</option>
-                        <option value='Half day' selected={obj.att[email.slice(0, -4)]['day'+day] === 'Half day' ? true : false}>Half Day</option>
-                        <option value='Holiday' selected={obj.att[email.slice(0, -4)]['day'+day] === 'Holiday' ? true : false}>Holiday</option>
-                    </select>
-                </td>
-            );
+        if(obj.att.hasOwnProperty([email.slice(0, -4)])){
+            for (let day = 1; day <= totalDaysInMonth; day++) {
+                headers.push(
+                    <td className='border p-1' key={day+''}>
+                        <select className={''}  onChange={(e)=>{
+                                attUpdation(e.target.value,email,day)
+                            }} value={Object.keys(obj.att).length !== 0 && obj.att[email.slice(0, -4)]['day'+day]}>
+                            <option value='-' ></option>
+                            <option value='present'>Present</option>
+                            <option value='Absent'>Absent</option>
+                            <option value='Morning Only'>Morning Only</option>
+                            <option value='Afternoon Only'>Afternoon Only</option>
+                            <option value='Holiday'>Holiday</option>
+                        </select>
+                    </td>
+                );
+            }
+            return headers;
         }
-        return headers;
+        else{
+            let updatedObj = { ...obj }; 
+            if(!updatedObj.att.hasOwnProperty(email.slice(0, -4))){
+                updatedObj.att[email.slice(0, -4)] = {}
+            }
+            setObj(updatedObj);
+            for (let day = 1; day <= totalDaysInMonth; day++) {
+                headers.push(
+                    <td className='border p-1' key={day+''}>
+                        <select className={''}  onChange={(e)=>{
+                                attUpdation(e.target.value,email,day)
+                            }} value={Object.keys(obj.att).length !== 0 && obj.att[email.slice(0, -4)]['day'+day]}>
+                            <option value='-' ></option>
+                            <option value='present'>Present</option>
+                            <option value='Absent'>Absent</option>
+                            <option value='Morning Only'>Morning Only</option>
+                            <option value='Afternoon Only'>Afternoon Only</option>
+                            <option value='Holiday'>Holiday</option>
+                        </select>
+                    </td>
+                );
+            }
+            return headers;
+        }
     };
+
+    function attUpdation(value,email,day){
+        let updatedObj = { ...obj }; 
+        if(!updatedObj.att.hasOwnProperty(email.slice(0, -4))){
+            updatedObj.att[email.slice(0, -4)] = {}
+        }
+        updatedObj.att[email.slice(0, -4)]['day' + day] = value;
+        setObj(updatedObj);
+    }
 
     const attSave = async (e) => {
         e.preventDefault();
@@ -406,6 +448,9 @@ function Class() {
             const em = email.slice(0, -4);
     
             const updatedObj = { ...resultobj };
+            if(!updatedObj.result.hasOwnProperty(em)){
+                updatedObj.result[em] = {}
+            }
             updatedObj.result[em][name] = value;
             let total = 0;
             for (let key in updatedObj.result[em]) {
@@ -425,6 +470,7 @@ function Class() {
             setResultobj(updatedObj);
         }
     }
+
 
     const submit = async (e) => {
         e.preventDefault();
@@ -470,7 +516,7 @@ function Class() {
     useEffect(()=>{
         axios.get(`http://localhost:3001/getHomework/${className}`)
         .then(response => {
-            if (response.data.message !== 'No hw found') {
+            if (response.data.message !== 'No hw found' && response.data.hw.length !== 0) {
                 setHw(response.data.hw[0].homework)
                 setLasthwDate(response.data.hw[0].date)
             }
@@ -491,7 +537,7 @@ function Class() {
             }
             axios.get(`http://localhost:3001/getHomework/${className}`)
             .then(response => {
-                if (response.data.message !== 'No hw found') {
+                if (response.data.message !== 'No hw found' && response.data.hw.length !== 0) {
                     setHw(response.data.hw[0].homework)
                     setLasthwDate(response.data.hw[0].date)
                 }
@@ -506,18 +552,18 @@ function Class() {
 
     }
 
-    console.log(resultobj)
-
     return ( 
         <>
             <TeacherNavbar></TeacherNavbar>
             <section className='text-center'>
-                <h2 className='bg-primary text-white w-25 rounded m-auto mb-3'>Class : {className}</h2>
+                <h2 className='m-auto mb-3'>
+                    <span className='bg-primary text-white rounded px-2 py-1'>Class : {className}</span>
+                </h2>
                 <h4>Class Teacher : {cT}</h4>
                 <button className='btn btn-primary' onClick={setClassTeacher}>Set me as class teacher</button>
             </section>
-            <div className='row w-100 justify-content-around mt-5'>
-                <div className='text-center col-5'>
+            <div className='row w-100 justify-content-around mt-5 m-auto'>
+                <div className='text-center col-lg-5 col-sm-7 mb-4'>
                     <div className='border rounded p-3 mb-4' style={{boxShadow:'0px 0px 20px -10px'}}>
                         <h4>Add student to your class :</h4>
                         <div className='d-flex align-items-center justify-content-center w-50 m-auto mb-2'>
@@ -534,7 +580,7 @@ function Class() {
                     </div>
                     <div className='border rounded p-3' style={{boxShadow:'0px 0px 20px -10px'}}>
                         <h4>Create Student :</h4>
-                        <form className='text-start w-50 m-auto' style={{lineHeight:'1.7'}} onSubmit={handleSubmit}>
+                        <form className='text-start m-auto create-stu' style={{lineHeight:'1.7'}} onSubmit={handleSubmit}>
                             <div>
                                 <p className='m-0'>Name :</p>
                                 <input className='w-100' value={name} onChange={(e)=>setName(e.target.value)}/>
@@ -587,25 +633,31 @@ function Class() {
                         </form>
                     </div>
                 </div>
-                <div className='col-6 p-3 teacher-list'>
-                    <h3 className='mb-3'>Students List</h3>
-                    <div className='d-flex justify-content-start align-items-center w-25 border rounded p-1'>
-                        <FontAwesomeIcon icon={faSearch} className='pe-1'style={{ color: 'gray' }}/>
-                        <input type='text' className='input text-center teacher-search-box w-75' placeholder='Enter Name' onChange={(e)=>{
-                            const filtered = studentnamesearch.filter(row => {
-                                return row.name.toLowerCase().includes(e.target.value.toLowerCase())   
-                            })
-                            setStudentsData(filtered)
-                        }} />
+                <div className='col-lg-6'>
+                    <div className='teacher-list p-3'>
+                        <h3 className='mb-3'>Students List</h3>
+                        <div className='d-flex justify-content-start align-items-center  border rounded p-1'>
+                            <FontAwesomeIcon icon={faSearch} className='pe-1'style={{ color: 'gray' }}/>
+                            <input type='text' className='input text-center teacher-search-box w-75' placeholder='Enter Name' onChange={(e)=>{
+                                const filtered = studentnamesearch.filter(row => {
+                                    return row.name.toLowerCase().includes(e.target.value.toLowerCase())   
+                                })
+                                setStudentsData(filtered)
+                            }} />
+                        </div>
+                        <div className='bg-danger text-white rounded mt-3 p-2 overflow-hidden'>
+                            <h4>!Note</h4>
+                            <p className='m-0'>If you <strong>'remove'</strong> a student from this class his/her latest result data will delete</p>
+                        </div>
+                        <DataTable 
+                            columns={columns}
+                            data={studentsData}
+                            fixedHeader
+                            pagination
+                        >
+                        </DataTable>
                     </div>
-                    <DataTable 
-                        columns={columns}
-                        data={studentsData}
-                        fixedHeader
-                        pagination
-                    >
-                    </DataTable>
-                </div>
+                </div>  
             </div>
 
             {/* Attendance */}
@@ -622,7 +674,7 @@ function Class() {
                         className='cursor-pointer text-center'
                     />
                 </div>
-                <div className="table-container d-flex" style={{ overflowX: 'auto', maxWidth: '100%',position:'relative'}}>
+                <div className="table-container mx-2 d-flex" style={{ overflowX: 'auto', maxWidth: '100%',position:'relative'}}>
                     <table className='att-table m-auto overflow-hidden bg-white h-100' style={{position:"sticky",left:'0',maxWidth:'10%',height:'100% !important'}}>
                         <thead style={{border:'2px solid black'}}>
                             <tr>
@@ -634,7 +686,7 @@ function Class() {
                             {
                                 studentsData !== null && studentsData.map(item => {
                                     return (
-                                        <tr>
+                                        <tr key={item.name}>
                                             <td className='border p-1'>{item.name}</td>
                                             <td className='border p-1'><select disabled><option>{item.rollno}</option></select></td>
                                         </tr>
@@ -653,7 +705,7 @@ function Class() {
                             {
                                 studentsData !== null && studentsData.map(item => {
                                     return (
-                                        <tr>
+                                        <tr key={item.email}>
                                             {renderTablebody(item.email)}
                                         </tr>
                                     )
@@ -670,7 +722,7 @@ function Class() {
                 <h2 className='mb-4 text-decoration-underline'>Daily Home Work</h2> 
                 <div>
                     <p className='hw-date'>Today : {`${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`}</p> 
-                    <textarea className='mt-3 p-3 rounded' value={lasthwDate+'\n\n'+hw} onChange={(e)=>setHw((e.target.value).slice(11))} style={{minWidth:'600px',minHeight:'400px'}}/>
+                    <textarea className='mt-3 p-3 rounded stu-hw-in-class' value={lasthwDate+'\n\n'+hw} onChange={(e)=>setHw((e.target.value).slice(11))}/>
                 </div>
                 <button className='btn btn-primary' onClick={saveHW}>Save</button>    
             </section>
@@ -716,7 +768,7 @@ function Class() {
                 {
                 subjects.length !== 0 &&
                 
-                <div className='p-2 w-75 m-auto mt-4 bg-white' style={{ boxShadow: '0px 0px 20px -5px gray' }}>
+                <div className='p-2 mx-2 m-auto mt-4 bg-white' style={{ boxShadow: '0px 0px 20px -5px gray',overflowX:'auto' }}>
                     <table className='w-100'>
                         <thead className='' style={{ border: '2px solid gray' }}>
                             <tr>
@@ -738,7 +790,7 @@ function Class() {
                                     {Array.from({ length: subjects?.length }).map((_, index) => (
                                         <td key={index} className='border p-1'>
                                             <input
-                                                name={subjects.hasOwnProperty(index) && subjects[index]}
+                                                name={subjects.length !== 0 && subjects[index]}
                                                 value={(resultobj?.result?.hasOwnProperty(item.email.slice(0, -4)) &&
                                                     resultobj?.result[item.email.slice(0, -4)].hasOwnProperty(subjects[index]))
                                                     ? resultobj.result[item.email.slice(0, -4)][subjects[index]]
@@ -774,16 +826,17 @@ function Class() {
                                         <select
                                             name="grade"
                                             onChange={(event) => handleChange(event, item.email)}
+                                            value={resultobj?.result?.[item.email.slice(0, -4)]?.grade}
                                         >
                                             <option value="">-</option>
-                                            <option value="A+" selected={resultobj?.result?.[item.email.slice(0, -4)]?.grade === 'A+'}>A+</option>
-                                            <option value="A" selected={resultobj?.result?.[item.email.slice(0, -4)]?.grade === 'A'}>A</option>
-                                            <option value="B+" selected={resultobj?.result?.[item.email.slice(0, -4)]?.grade === 'B+'}>B+</option>
-                                            <option value="B" selected={resultobj?.result?.[item.email.slice(0, -4)]?.grade === 'B'}>B</option>
-                                            <option value="C+" selected={resultobj?.result?.[item.email.slice(0, -4)]?.grade === 'C+'}>C+</option>
-                                            <option value="C" selected={resultobj?.result?.[item.email.slice(0, -4)]?.grade === 'C'}>C</option>
-                                            <option value="D" selected={resultobj?.result?.[item.email.slice(0, -4)]?.grade === 'D'}>D</option>
-                                            <option value="F" selected={resultobj?.result?.[item.email.slice(0, -4)]?.grade === 'F'}>F</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A">A</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B">B</option>
+                                            <option value="C+">C+</option>
+                                            <option value="C">C</option>
+                                            <option value="D">D</option>
+                                            <option value="F">F</option>
                                         </select>
                                     </td>
                                 </tr>

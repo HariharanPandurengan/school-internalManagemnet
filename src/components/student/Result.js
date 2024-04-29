@@ -32,13 +32,11 @@ function Result() {
         }
     }
 
-    console.log(sub)
-
     return ( 
         <>
             <StudentNavbar></StudentNavbar>
             {
-                result !== null &&
+                (result !== null && Object.keys(result.result).length !== 0) &&
                     <section className='w-100 text-center'>
                         <h3 className='mb-4'>Result of "{result?.examName}"</h3>
                         <table className='w-75 m-auto text-center'>
@@ -71,7 +69,7 @@ function Result() {
                     </section>
             }
             {
-                result === null &&
+                (result === null || Object.keys(result.result).length === 0) &&
                 <p className='text-center'>No result scheduled</p>
             }
         </>

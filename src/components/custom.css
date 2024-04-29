@@ -97,6 +97,7 @@ h2 {
 .teacher-list{
     border-radius: 25px;
     box-shadow: 0px 0px 15px -5px rgb(152, 152, 152);
+    padding: 10px 0px;
 }
 
 /* Style for input box */
@@ -135,6 +136,7 @@ box-shadow: none; /* Remove any box shadow */
 }
 
 .t-profile{
+    width: 50%;
     background-color: rgb(253, 234, 210);
     padding: 10px;
     border-radius: 10px;
@@ -203,14 +205,18 @@ box-shadow: none; /* Remove any box shadow */
 
   .t-nav-ul{
     width: 40%;
+    display: flex;
+    justify-content: space-around;
   }
 
   .adm-nal-ul{
     width: 40%;
+    display: flex;
     justify-content: space-around;
   }
 
   .stNav-ul{
+    display: flex;
     width: 40%;
     justify-content: space-around;
   }
@@ -218,14 +224,6 @@ box-shadow: none; /* Remove any box shadow */
   .att-table{
     width: 90%;
   }
-  body {
-    /* background: linear-gradient(rgb(242, 243, 254),white);
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    background-repeat: no-repeat;
-    height: 100vh; */
- }
 
  .nav-opt:hover{
   text-shadow: 0 0 10px white, /* Glow color */
@@ -263,3 +261,138 @@ box-shadow: none; /* Remove any box shadow */
   z-index: 999 ;
   padding-top: 200px;
  }
+
+ .phone-mobile-nav{
+    display: none;
+ }
+
+ .stu-hw{
+  width: 80%;
+  min-height: 400px;
+  box-shadow:0px 0px 5px 0px gray;
+  border:none;
+ }
+
+ .stu-hw-in-class{
+  width: 50%;
+  min-height: 400px;
+  box-shadow:0px 0px 5px 0px gray;
+  border:none;
+ }
+
+ .stu-teacher-tt-div{
+  width: 75%;
+  margin: auto;
+ }
+ .stu-teacher-tt{
+  width: 100% !important;
+ }
+
+ .stu-techer-passChange-div{
+  width: 25%;
+ }
+ .create-stu{
+  width: 50%;
+  }
+
+  .hw-date{
+    width: 30%;
+  }
+
+  .create-stu{
+    width: 80%;
+  }
+
+  .stu-tec-img-div{
+    width:150px;
+    height:200px;
+    border:2px solid black;
+    position:absolute;
+    top:2%;
+    right:2%
+  }
+
+  
+ @media only screen and (max-width: 950px) {
+
+  .login-container {
+    width: 80%;
+ }
+  .adm-nal-ul{
+    display: none;
+  }
+
+  .stNav-ul{
+    display: none;
+  }
+
+  .t-nav-ul{
+    display: none;
+  }
+
+  .stu-tec-img-div{
+    width:150px;
+    height:200px;
+    border:2px solid black;
+    position:relative;
+    margin: auto;
+    margin-bottom: 5px;
+  }
+
+  #teacher-login {
+    width: 90%;
+  }
+  .welcomeH2{
+    font-size: 15px;
+  }
+  .phone-mobile-nav{
+    display: block;
+  }
+  .nav-ul-ph-tab{
+    position: absolute;
+    right: 2%;
+    top: 35px;
+    background-color: #007bff;
+    padding: 10px !important;
+    z-index: 999;
+  }
+
+  .nav-ul-ph-tab li{
+    margin-bottom: 10px;
+  }
+
+  .t-profile{
+    width: 90%;
+  }
+
+  .stu-teacher-tt-div{
+    width: 90%;
+    overflow: hidden;
+   }
+
+  .stu-teacher-tt{
+    width: 90% !important;
+    overflow: hidden;
+   }
+
+   .stu-techer-passChange-div{
+    width: 70%;
+   }
+
+   .stu-hw-in-class{
+    width: 90%;
+   }
+
+   .hw-date{
+    width: 60%;
+  }
+}
+
+@media only screen and (max-width: 1300px) {
+  .stNav-ul{
+    width: 50%;
+  }
+  .t-nav-ul{
+    width: 50%;
+  }
+}

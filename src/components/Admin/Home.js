@@ -85,9 +85,8 @@ function Home() {
     return ( 
         <>
             <Navbar></Navbar>
-            
-            <section className='admin-sec-1 p-3'>
-                <div className='col-4'>
+            <section className='w-100 row justify-content-center m-auto p-3'>
+                <div className='col-lg-4 mb-4'>
                     <div id="create-teacher" className='p-3'>
                         <h3>Create Teacher</h3>
                         <form onSubmit={handleSubmit}>
@@ -107,17 +106,16 @@ function Home() {
                         </form>
                     </div>
                 </div>
-                <div className='col-1'>
+                <div className='col-lg-1'>
                     <div className='line'></div>
                 </div>
-                <div className='col-6 p-3 teacher-list'>
+                <div className='col-lg-6 p-3 teacher-list'>
                     <h3 className='mb-3'>Teachers List</h3>
                     <div className='d-flex justify-content-start align-items-center w-25 border rounded p-1'>
                         <FontAwesomeIcon icon={faSearch} className='pe-1'style={{ color: 'gray' }}/>
-                        <input type='text' className='input text-center teacher-search-box w-75' placeholder='Enter Name' onChange={(e)=>{
+                        <input type='text' className='input text-center teacher-search-box w-75' placeholder='Enter Email' onChange={(e)=>{
                             const filtered = teacheremailsearch.filter(row => {
-                                console.log(e.target.value.toLowerCase())
-                                return row.name.toLowerCase().includes(e.target.value.toLowerCase())   
+                                return row.email.toLowerCase().includes(e.target.value.toLowerCase())   
                             })
                             setTeacherData(filtered)
                         }} />

@@ -58,7 +58,6 @@ function Home() {
         });
     },[useremail])
 
-    console.log(notifiContent)
 
     const [formData, setFormData] = useState({
         email: useremail,
@@ -95,7 +94,7 @@ function Home() {
                     if (key in updatedstudentDetails) {
                         if(key === 'emergencyContact1'){
                             for (const subKey  in studentData.studentProfile.emergencyContact1) {
-                                console.log(studentData.studentProfile.emergencyContact1[subKey])
+                                
                                 updatedstudentDetails.emergencyContact1[subKey] = studentData.studentProfile.emergencyContact1[subKey];
                             }  
                         }
@@ -120,7 +119,7 @@ function Home() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         if(name === 'em_name1' || name === 'em_relationship1' || name === 'em_mobileNumber1'){
-            console.log(name)
+            
             setFormData(prevState => ({
                 ...prevState,
                 studentDetails: {
@@ -165,7 +164,6 @@ function Home() {
             axios.get(`http://localhost:3001/getStudentDetail/${useremail}`)
             .then(response => {
                 setStudentData(response.data.user[0])
-                setPrevImg(response.data.user[0].image)
             })
             .catch(error => {
               console.error('Error fetching admins:', error);
@@ -177,31 +175,34 @@ function Home() {
     };
 
     const uploadImg = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:3001/updateStudentsImage', {
-                image : img,
-                email : useremail
-            } , {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then(response => {
-            if(response.data.message === 'Student Image updated successfully'){
-                alert('Photo Updated Successfully')
-            }
-            axios.get(`http://localhost:3001/getStudentDetail/${useremail}`)
+        if(img === ''){
+            alert('Choose a image to upload')
+        }
+        else{
+            axios.post('http://localhost:3001/updateStudentsImage', {
+                    image : img,
+                    email : useremail
+                } , {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
             .then(response => {
-                setStudentData(response.data.user[0])
-                setPrevImg(response.data.user[0].image)
+                if(response.data.message === 'Student Image updated successfully'){
+                    alert('Photo Updated Successfully')
+                }
+                axios.get(`http://localhost:3001/getStudentDetail/${useremail}`)
+                .then(response => {
+                    setPrevImg(response.data.user[0].image)
+                })
+                .catch(error => {
+                console.error('Error fetching admins:', error);
+                });
             })
             .catch(error => {
-              console.error('Error fetching admins:', error);
+                console.error('Error sending data:', error);
             });
-        })
-        .catch(error => {
-            console.error('Error sending data:', error);
-        });
+        }
     };
 
     let aa = prevImg?.split('\\');
@@ -231,7 +232,7 @@ function Home() {
                 </div>
             }
             <StudentNavbar></StudentNavbar>
-            <section className='w-50 m-auto overflow-hidden t-profile'>
+            <section className='m-auto overflow-hidden t-profile'>
                 <h3>Profile</h3>
                 <form className='ms-3 w-75' onSubmit={handleSubmit}>
                     <div className="profile-divs">
@@ -254,31 +255,31 @@ function Home() {
                     </div>
                     <div className="profile-divs">
                         <p>Standard : </p>
-                        <select name="std" onChange={handleChange}>
-                            <option value='lkg' selected={formData.studentDetails.std === 'lkg' ? true : false}>LKG</option>
-                            <option value='ukg' selected={formData.studentDetails.std === 'ukg' ? true : false}>UKG</option>
-                            <option value='1' selected={formData.studentDetails.std === '1' ? true : false}>1</option>
-                            <option value='2' selected={formData.studentDetails.std === '2' ? true : false}>2</option>
-                            <option value='3' selected={formData.studentDetails.std === '3' ? true : false}>3</option>
-                            <option value='4' selected={formData.studentDetails.std === '4' ? true : false}>4</option>
-                            <option value='5' selected={formData.studentDetails.std === '5' ? true : false}>5</option>
-                            <option value='6' selected={formData.studentDetails.std === '6' ? true : false}>6</option>
-                            <option value='7' selected={formData.studentDetails.std === '7' ? true : false}>7</option>
-                            <option value='8' selected={formData.studentDetails.std === '8' ? true : false}>8</option>
-                            <option value='9' selected={formData.studentDetails.std === '9' ? true : false}>9</option>
-                            <option value='10' selected={formData.studentDetails.std === '10' ? true : false}>10</option>
-                            <option value='11' selected={formData.studentDetails.std === '11' ? true : false}>11</option>
-                            <option value='12' selected={formData.studentDetails.std === '12' ? true : false}>12</option>
+                        <select name="std" value={formData?.studentDetails?.std} onChange={handleChange}>
+                            <option value='lkg'>LKG</option>
+                            <option value='ukg' >UKG</option>
+                            <option value='1' >1</option>
+                            <option value='2' >2</option>
+                            <option value='3' >3</option>
+                            <option value='4' >4</option>
+                            <option value='5' >5</option>
+                            <option value='6' >6</option>
+                            <option value='7' >7</option>
+                            <option value='8' >8</option>
+                            <option value='9' >9</option>
+                            <option value='10' >10</option>
+                            <option value='11' >11</option>
+                            <option value='12' >12</option>
                         </select>
                     </div>
                     <div className="profile-divs">
                         <p>Section : </p>
-                        <select name="section" onChange={handleChange}>
-                            <option value='a' selected={formData.studentDetails.section === 'a' ? true : false}>A</option>
-                            <option value='b' selected={formData.studentDetails.section === 'b' ? true : false}>B</option>
-                            <option value='c' selected={formData.studentDetails.section === 'c' ? true : false}>C</option>
-                            <option value='d' selected={formData.studentDetails.section === 'd' ? true : false}>D</option>
-                            <option value='e' selected={formData.studentDetails.section === 'e' ? true : false}>E</option>
+                        <select name="section" value={formData?.studentDetails?.section} onChange={handleChange}>
+                            <option value='a'>A</option>
+                            <option value='b'>B</option>
+                            <option value='c'>C</option>
+                            <option value='d'>D</option>
+                            <option value='e'>E</option>
                         </select>
                     </div>
                     <div className="profile-divs">
@@ -409,6 +410,7 @@ function Home() {
                     </div>
                     <button type="submit" className='btn btn-primary'>Submit</button>
                 </form>
+                <hr></hr>
                 <div className='mt-2 ms-3'>
                     <p className='m-0 fw-bold'>Your Picture :</p>
                     <input type="file" accept="image/*" name="image" onChange={(e)=>setImg(e.target.files[0])}/> <br/>

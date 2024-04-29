@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 function Home() {
     const [currentDateTime, setCurrentDateTime] = useState(new Date());
     const [logData, setLogData] = useState(null);
+    const [logValue , setLogValue] = useState('Select')
     const useremail = useSelector((state) => state.user.email);
 
     useEffect(()=>{
@@ -43,6 +44,8 @@ function Home() {
         e.preventDefault();
 
         const selectedOption = e.target.value;
+
+        setLogValue(selectedOption)
 
         const currentDate = new Date();
         let day = currentDate.getDate(); 
@@ -108,11 +111,11 @@ function Home() {
                         }
                     </tbody>
                 </table>
-                <select onChange={handleOptionChange}>
+                <select onChange={handleOptionChange} value={logValue}>
                     {
                         logData === null && (
                         <>
-                            <option selected disabled>Select</option>
+                            <option disabled>Select</option>
                             <option value='Login'>Login</option>
                         </>
                         )
@@ -120,7 +123,7 @@ function Home() {
                     {
                         logData !== null && logData.length === 1 && logData[0].purpose === 'Login' && (
                         <>
-                            <option selected disabled>Select</option>
+                            <option disabled>Select</option>
                             <option value='Logout'>Logout</option>
                         </>
                         )
@@ -128,7 +131,7 @@ function Home() {
                     {
                         logData !== null && logData.length >= 2 && (
                         <>
-                            <option selected>You Completed Todays Log</option>
+                            <option>You Completed Todays Log</option>
                         </>
                         )
                     }

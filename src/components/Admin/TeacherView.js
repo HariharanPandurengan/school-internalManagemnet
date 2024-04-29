@@ -51,10 +51,13 @@ function TeacherView() {
     return ( 
         <>
             <Navbar></Navbar>
-            <div className='row w-100 justify-content-between align-items-start'>
+            <div className='row w-100 justify-content-between align-items-start m-auto p-2'>
                 {
                 teacherData !== null && 
-                <div className='col-5 border m-auto rounded p-3 mt-5 position-relative' style={{boxShadow:'0px 0px 15px -5px gray',wordWrap : 'break-word'}}>
+                <div className='col-lg-5 border m-auto rounded p-3 position-relative mb-4' style={{boxShadow:'0px 0px 15px -5px gray',wordWrap : 'break-word'}}>
+                       <div className='stu-tec-img-div'>
+                            <img className='w-100 h-100' src={"../"+aa} alt="TeacherImage" />
+                        </div>
                         <p><strong>Full Name :</strong> {teacherData.teacherProfile?.fullname}</p>
                         <p><strong>Email :</strong> {teacherData.email}</p>
                         <p><strong>Mobile Number :</strong> {teacherData.teacherProfile?.contact}</p>
@@ -77,20 +80,16 @@ function TeacherView() {
                         <small>Name : {teacherData.teacherProfile?.emergencyContact2?.em_name2}</small> <br/>
                         <small>Relationship : {teacherData.teacherProfile?.emergencyContact2?.em_relationship2}</small> <br/>
                         <small>Contact Number : {teacherData.teacherProfile?.emergencyContact2?.em_mobileNumber2}</small> 
-                        
-                        <div style={{width:'150px',height:'200px',border:'2px solid black',position:'absolute',top:'2%',right:'2%'}}>
-                            <img className='w-100 h-100' src={"../"+aa} alt="TeacherImage" />
-                        </div>
-                        
+                             
                 </div>
                 }
-                <div className='col-5 mt-5'>
+                <div className='col-lg-5' style={{boxShadow:'0px 0px 15px -5px gray',wordWrap : 'break-word'}}>
                     <h4 className='text-decoration-underline'>Log Details</h4>
                     <div>
                         <h2>Select a Date:</h2>
                         <div className='w-75 m-auto'>
                             <Calendar
-                            className="bg-info w-75 m-auto"
+                            className="bg-info m-auto"
                                 onChange={handleDateChange}
                                 value={selectedDate}
                             />

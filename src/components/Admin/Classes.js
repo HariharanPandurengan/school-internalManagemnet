@@ -10,6 +10,8 @@ function Classes() {
     const [std, setStd] = useState('');
     const [section, setSection] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectStd , setSelectStd] = useState('select')
+    const [selectSec , setSelectSec] = useState('select')
 
     let className = std+' '+section;
 
@@ -57,40 +59,52 @@ function Classes() {
     return ( 
         <>
             <Navbar></Navbar>
-            <section className='create class'>
+            <section className='create class  d-flex flex-column align-items-center mb-4'>
                 <h3>Create a new class :</h3>
-                <form onSubmit={createClass} className='d-flex align-items-center'>
-                    <p className='m-0'>Standard :</p>
-                    <select className='me-2 ms-1 me-4' onChange={(e)=>setStd(e.target.value)}>
-                        <option disabled selected>Select</option>
-                        <option>LKG</option>
-                        <option>UKG</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                        <option>11</option>
-                        <option>12</option>
-                    </select>
-                  
-                    <p className='m-0 me-1'>Section :</p>
-                    <select onChange={(e)=>setSection(e.target.value)}>
-                        <option disabled selected>Select</option>
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
-                        <option>D</option>
-                        <option>E</option>
-                    </select>
+                <form onSubmit={createClass} className='text-center'>
+                    <div className='d-flex mb-2'>
+                        <div>
+                            <p className='m-0'>Standard :</p>
+                            <select className='me-2 ms-1 me-4' onChange={(e)=>{
+                                setStd(e.target.value)
+                                setSelectStd(e.target.value)
+                                }}>
+                                <option disabled>Select</option>
+                                <option>LKG</option>
+                                <option>UKG</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                            </select>
+                        </div>
+                        <div>
+                            <p className='m-0 me-1'>Section :</p>
+                            <select onChange={(e)=>{
+                                setSection(e.target.value)
+                                setSelectSec(e.target.value)
+                            }}>
+                                <option disabled>Select</option>
+                                <option>A</option>
+                                <option>B</option>
+                                <option>C</option>
+                                <option>D</option>
+                                <option>E</option>
+                            </select>
+                        </div>
+                    </div>
                     <button className='btn btn-primary ms-3'>Create</button>
                 </form>
             </section>
+            <hr></hr>
             <section className='text-center class-list'>
                 <h3>Classes List :</h3>
                 {
@@ -100,7 +114,7 @@ function Classes() {
                 {
                     classes && 
                     <select onChange={(e) => setSearchTerm(e.target.value)}>
-                           <option selected value="">All</option>
+                           <option value="">All</option>
                             <option>LKG</option>
                             <option>UKG</option>
                             <option>1</option>
@@ -122,17 +136,17 @@ function Classes() {
                 }
                 {
                     filteredClasses.length > 0 && (
-                        <div className="row w-100 ms-2 justify-content-around">
+                        <div className="row w-100 m-auto justify-content-around">
                             {filteredClasses.map((item) => {
                                 return (
-                                    <div className='col-4 bg-white px-3'>
+                                    <div className='col-lg-4 col-md-5 bg-white px-3' key={item.className}>
                                         <div
-                                        key={item._id}
                                         className=" bg-primary rounded p-3 my-2"
                                         style={{ boxShadow: '0px 0px 5px 0px gray', cursor: 'pointer' }}
+                                        key={item.className}
                                        >
-                                            <Link to={"/adminclass/"+item.className} className='rounded py-3 px-2'>
-                                                <h1 className="m-0 text-white">{item.className}</h1>
+                                            <Link to={"/adminclass/"+item.className} className='rounded py-3 px-2' key={item.className}>
+                                                <h1 className="m-0 text-white" key={item.className}>{item.className}</h1>
                                             </Link>
                                         
                                         </div>
