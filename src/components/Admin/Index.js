@@ -25,7 +25,7 @@ function Index() {
         e.preventDefault();
         
         try {
-            const response = await axios.post('http://localhost:3001/adminLogin ', {
+            const response = await axios.post('https://school-mern-api.vercel.app/adminLogin ', {
                 email: email,
                 password: password
             });
