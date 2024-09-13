@@ -396,9 +396,7 @@ function Class() {
 
                 for (let key in preResult.result) {
                     if (updatedObj.result.hasOwnProperty(key)) {
-                        updatedObj.result[key] = preResult.result[key];
-    
-                       
+                        updatedObj.result[key] = preResult.result[key]; 
                     }
                 }
                 setResultobj(updatedObj);
@@ -715,8 +713,9 @@ function Class() {
             <section className='text-center mt-5 py-3 class-hw'>
                 <h2 className='mb-4 text-decoration-underline'>Daily Home Work</h2> 
                 <div>
-                    <p className='hw-date'>Today : {`${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`}</p> 
-                    <textarea className='mt-3 p-3 rounded stu-hw-in-class' value={lasthwDate+'\n\n'+hw} onChange={(e)=>setHw((e.target.value).slice(11))}/>
+                    <p className='hw-date mb-4'>Today : {`${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`}</p> 
+                    <p className='m-1'><span className='bg-white rounded px-2'>Last Homework Updated Date : {lasthwDate}</span></p>
+                    <textarea className='p-3 rounded stu-hw-in-class' value={hw} onChange={(e)=>setHw((e.target.value).slice(11))}/>
                 </div>
                 <button className='btn btn-primary' onClick={saveHW}>Save</button>    
             </section>

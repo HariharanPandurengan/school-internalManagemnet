@@ -40,7 +40,7 @@ function App() {
     <>
       <Provider store={store}>
         <Routes>
-            <Route path="/" element={<AdminLogin></AdminLogin>}></Route>S
+            <Route path="/" element={<AdminLogin></AdminLogin>}></Route>
             <Route element={<ProtectedRoute></ProtectedRoute>}>
               <Route path="/adminHome" element={<AdminLandingPage></AdminLandingPage>}></Route>
               <Route path="/teacherView/:email" element={<TeacherView></TeacherView>}></Route>

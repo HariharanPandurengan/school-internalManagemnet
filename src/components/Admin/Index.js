@@ -25,7 +25,7 @@ function Index() {
         e.preventDefault();
         
         try {
-            const response = await axios.post('https://school-mern-api.vercel.app/adminLogin ', {
+            const response = await axios.post('http://localhost:3001/adminLogin', {
                 email: email,
                 password: password
             });
@@ -33,7 +33,7 @@ function Index() {
                alert('Worng Email or Password')
             }
             else{
-               const { userFound , name , email } = response.data;
+               const { name , email } = response.data;
                const details = {
                   username : name,
                   email : email,
@@ -44,7 +44,7 @@ function Index() {
             }
             
         } catch (error) {
-            console.error('Error creating teacher:', error);
+            console.error('Error Admin Login:', error);
         }
     };
 

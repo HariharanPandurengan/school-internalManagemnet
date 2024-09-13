@@ -29,9 +29,9 @@ const userSlice = createSlice({
     }
 });
 
-export const {adminLogin,teacherLogin,studentLogin,userDetails} = userSlice.actions;
+export const {adminLogin,teacherLogin,studentLogin,userDetails} = userSlice.actions; //useDispatch
 
-export const store =  configureStore({
+export const store =  configureStore({ //useSelector
     reducer: {
         user:userSlice.reducer
     }
